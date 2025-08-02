@@ -183,7 +183,7 @@ body {
   }
 
   .btn-primary {
-    @apply bg-primary text-white rounded-xl cursor-pointer px-4 py-2 flex items-center gap-2;
+    @apply !bg-primary_color text-white !rounded-[24px] cursor-pointer px-4 py-2 flex items-center gap-2;
   }
 
   .navbar {

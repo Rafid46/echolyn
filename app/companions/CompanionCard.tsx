@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -47,9 +48,9 @@ const CompanionCard = ({
         <p className="text-sm">{duration} minutes</p>
       </div>
       <Link href={`/companions/${id}`} className="w-full">
-        <button className="btn-primary w-full justify-center">
+        <Button className="btn-primary w-full justify-center">
           Launch Lesson
-        </button>
+        </Button>
       </Link>
     </article>
   );

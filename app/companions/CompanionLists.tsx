@@ -29,7 +29,6 @@ const CompanionLists = ({
             <TableHead className="text-lg w-2/3">Lessons</TableHead>
             <TableHead className="text-lg">Subject</TableHead>
             <TableHead className="text-lg text-right">Duration</TableHead>
-            <TableHead className="text-right">Amount</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -57,6 +56,38 @@ const CompanionLists = ({
                     </div>
                   </div>
                 </Link>
+              </TableCell>
+              <TableCell>
+                <div className="subject-badge w-fit max-md:hidden">
+                  {subject}
+                </div>
+                <div
+                  style={{
+                    backgroundColor: getSubjectColor(subject),
+                  }}
+                  className="flex items-center justify-center rounded-lg w-fit p-2 md:hidden"
+                >
+                  <Image
+                    alt="subject"
+                    src={`/icons/${subject}.svg`}
+                    width={18}
+                    height={18}
+                  />
+                </div>
+              </TableCell>
+              <TableCell>
+                <div className="flex items-center justify-end w-full gap-2">
+                  <p className="text-2xl ">
+                    {duration} <span className="max-md:hidden">mins</span>
+                  </p>
+                  <Image
+                    className="md:hidden"
+                    src="/icons/clock.svg"
+                    alt="sub"
+                    width={14}
+                    height={14}
+                  />
+                </div>
               </TableCell>
             </TableRow>
           ))}
