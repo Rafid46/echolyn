@@ -1,6 +1,6 @@
-import CompanionCard from "./companion/CompanionCard";
-import CompanionLists from "./companion/CompanionLists";
-import CTA from "./companion/CTA";
+import CompanionCard from "./companions/CompanionCard";
+import CompanionLists from "./companions/CompanionLists";
+import CTA from "./companions/CTA";
 
 const Page = () => {
   const recentSessions = [
