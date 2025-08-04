@@ -6,20 +6,16 @@ import { getSubjectColor } from "@/lib/utils";
 import SubjectFilter from "./SubjectFilter";
 import SearchInput from "./SearchInput";
 
-const CompanionsLibrary = async ({ searchparams }: any) => {
-  const filters = await searchparams;
-  const subjects = filters?.subject ? filters?.subject : "";
-  const topics = filters?.topic ? filters?.topic : "";
-  const companions = await getAllCompanions({ subjects, topics });
+const CompanionsLibrary = async ({ searchParams }: SearchParams) => {
+  const filters = await searchParams;
+  const subject = filters?.subject ? filters?.subject : "";
+  const topic = filters?.topic ? filters?.topic : "";
+  const companions = await getAllCompanions({ subject, topic });
   console.log(companions);
   return (
     <main>
+      <h1>Companion Library</h1>
       <section className="flex justify-between gap-4 max-sm:flex-col">
-        <h1>Companion Library</h1>
-        <div className="flex gap-4">
-          <SearchInput />
-          <SubjectFilter />
-        </div>
         <section className="companions-grid">
           {companions?.map((companion: any) => (
             <CompanionCard
@@ -29,6 +25,10 @@ const CompanionsLibrary = async ({ searchparams }: any) => {
             />
           ))}
         </section>
+        <div className="flex gap-4">
+          <SearchInput />
+          {/* <SubjectFilter /> */}
+        </div>
       </section>
     </main>
   );
