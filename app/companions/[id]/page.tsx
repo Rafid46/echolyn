@@ -4,6 +4,7 @@ import { currentUser } from "@clerk/nextjs/server";
 import Image from "next/image";
 import { redirect } from "next/navigation";
 import React from "react";
+import CompanionVoice from "../CompanionVoice";
 
 interface companionSessionPageProps {
   name: string;
@@ -13,7 +14,8 @@ interface companionSessionPageProps {
 
 const CompanionSession = async ({ params }: companionSessionPageProps) => {
   const { id } = await params;
-  const { name, subject, title, topic, duration } = await getCompanion(id);
+  const companion = await getCompanion(id);
+  const { name, subject, topic, duration } = companion;
   const user = await currentUser();
   if (!user) return redirect("sign-in");
   if (!name) return redirect("/companions");
@@ -46,6 +48,12 @@ const CompanionSession = async ({ params }: companionSessionPageProps) => {
           {duration} minutes
         </p>
       </article>
+      <CompanionVoice
+        {...companion}
+        companionId={id}
+        userName={user?.firstName}
+        userImage={user?.imageUrl}
+      />
     </main>
   );
 };

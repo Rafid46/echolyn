@@ -171,7 +171,7 @@ body {
   } */
 
   .rounded-border {
-    @apply rounded-4xl border border-black;
+    @apply rounded-2xl border border-[#222222];
   }
 
   .cta-section {
