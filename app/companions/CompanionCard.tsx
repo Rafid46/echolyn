@@ -1,6 +1,9 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 interface CompanionCardProps {
   id: string;
@@ -19,6 +22,14 @@ const CompanionCard = ({
   subject,
   topic,
 }: CompanionCardProps) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
+
+  const handleLaunch = () => {
+    setIsLoading(true);
+    router.push(`/companions/${id}`);
+  };
+
   return (
     <article
       className="companion-card !border-none"
@@ -48,8 +59,12 @@ const CompanionCard = ({
         <p className="text-sm">{duration} minutes</p>
       </div>
       <Link href={`/companions/${id}`} className="w-full">
-        <Button className="btn-primary w-full justify-center">
-          Launch Lesson
+        <Button
+          onClick={handleLaunch}
+          disabled={isLoading}
+          className="!bg-primary_color !py-[20px] rounded-xl cursor-pointer w-full justify-center"
+        >
+          {isLoading ? "Loading..." : "Launch Lesson"}
         </Button>
       </Link>
     </article>

@@ -4,13 +4,14 @@
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Mic, MicOff, Repeat2 } from "lucide-react";
+import { Bot, Mic, MicOff } from "lucide-react";
 import { cn, configureAssistant, getSubjectColor } from "@/lib/utils";
 import Lottie from "lottie-react";
 import { useEffect, useRef, useState } from "react";
-import soundWave from "../../constants/soundwaves.json";
+import soundWave from "../../constants/soundanimation.json";
 import { vapi } from "@/lib/vapi.sdk";
-
+import { FaMicrophone } from "react-icons/fa";
+import { MdMicOff } from "react-icons/md";
 enum CallStatus {
   INACTIVE = "INACTIVE",
   CONNECTING = "CONNECTING",
@@ -30,6 +31,7 @@ const CompanionVoice = ({
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [callStatus, setCallStatus] = useState<CallStatus>(CallStatus.INACTIVE);
   const [isMuted, setIsMuted] = useState(false);
+  const [messages, setMessages] = useState<SavedMessage[]>([]);
   useEffect(() => {
     if (lottieRef) {
       if (isSpeaking) {
@@ -43,7 +45,12 @@ const CompanionVoice = ({
   useEffect(() => {
     const onCallStart = () => setCallStatus(CallStatus.ACTIVE);
     const onCallEnd = () => setCallStatus(CallStatus.FINISHED);
-    const onMessage = () => {};
+    const onMessage = (message: Message) => {
+      if (message.type === "transcript" && message.transcriptType === "final") {
+        const newMessage = { role: message.role, content: message.transcript };
+        setMessages((prev) => [newMessage, ...prev]);
+      }
+    };
     const onSpeechStart = () => setIsSpeaking(true);
     const onSpeechEnd = () => setIsSpeaking(false);
     const onError = (error: Error) => console.log("Error", error);
@@ -89,21 +96,17 @@ const CompanionVoice = ({
   };
 
   return (
-    <div className="flex flex-col">
-      <div className="flex items-center justify-between">
-        <div className="flex flex-col w-full h-[365px] flex-col gap-6 md:flex-row">
-          {/* Main Content Area */}
-          <Card className="flex flex-1 flex-col items-center justify-center rounded-xl border-2 border-red-500 bg-white p-8 shadow-lg">
+    <div className="flex justify-center gap-4">
+      {/* left card */}
+      <div className="w-[500px]">
+        <div className="flex flex-col gap-4">
+          {/* bot card */}
+          <Card className="rounded-xl border-2 border-[#EBD6FB] !bg-white p-8">
             <CardContent className="flex flex-col items-center justify-center p-0 text-center">
-              <div
-                className="w-fit mx-auto mb-6 flex items-center justify-center rounded-2xl bg-purple-200 p-[50px]"
-                style={{
-                  backgroundColor: getSubjectColor(subject),
-                }}
-              >
+              <div className="mb-6 flex items-center justify-center rounded-2xl">
                 <div
                   className={cn(
-                    "absolute transition-opacity duration-1000",
+                    "transition-opacity duration-1000",
                     callStatus === CallStatus.FINISHED ||
                       callStatus === CallStatus.INACTIVE
                       ? "opacity-1000"
@@ -112,13 +115,7 @@ const CompanionVoice = ({
                       "opacity-100 animate-pulse"
                   )}
                 >
-                  <Image
-                    src={`/icons/${subject}.svg`}
-                    alt="Flask icon"
-                    width={64}
-                    height={64}
-                    className="h-16 w-16"
-                  />
+                  <Bot className="text-primary_color" size={200} />
                 </div>
                 <div
                   className={cn(
@@ -141,44 +138,52 @@ const CompanionVoice = ({
               </h2>
             </CardContent>
           </Card>
+          {/* User Profile Card */}
+          <Card className="relative w-full h-60 overflow-hidden rounded-xl p-6 bg-clip-padding backdrop-filter backdrop-blur-xl bg-opacity-0 flex flex-col items-center justify-center">
+            {/* Background image layer */}
+            <div
+              className="absolute inset-0 bg-center bg-cover scale-110 filter blur-md z-0"
+              style={{ backgroundImage: `url('${userImage}')` }}
+              aria-hidden="true" // Decorative background
+            />
 
-          {/* Sidebar */}
-          <div className="flex w-full flex-col gap-6 md:w-80">
-            {/* User Profile Card */}
-            <Card className="flex flex-col items-center justify-center rounded-xl bg-white p-6 shadow-lg">
+            {/* Content layer */}
+            <div className="relative z-10 flex flex-col items-center justify-center">
               <Image
-                src={userImage}
-                alt="Adrian"
-                width={96}
-                height={96}
-                className="mb-4 h-24 w-24 rounded-full object-cover"
+                src={userImage || "/placeholder.svg"}
+                alt={userName}
+                width={100}
+                height={100}
+                className="mb-4 rounded-full object-cover border-2 border-white"
+                priority
               />
-              <h3 className="text-lg font-semibold text-gray-800">
-                {userName}
-              </h3>
-            </Card>
-
-            {/* Control Buttons */}
-            <div className="grid grid-cols-2 gap-4">
-              <Button
-                onClick={toggleMic}
-                className="flex h-24 flex-col items-center justify-center rounded-xl bg-white text-gray-800 shadow-lg hover:bg-gray-50"
-              >
-                {isMuted ? (
-                  <MicOff className="mb-2 h-8 w-8" />
-                ) : (
-                  <Mic className="mb-2 h-8 w-8" />
-                )}
-                <span className="text-sm">
-                  {isMuted ? "Turn On mic" : "Turn off mic"}
-                </span>
-              </Button>
-              <Button className="flex h-24 flex-col items-center justify-center rounded-xl bg-white text-gray-800 shadow-lg hover:bg-gray-50">
-                <Repeat2 className="mb-2 h-6 w-6" />
-                <span className="text-sm">Repeat</span>
-              </Button>
+              <h3 className="text-lg font-semibold text-white">{userName}</h3>
             </div>
 
+            {/* Control Buttons */}
+            {callStatus === CallStatus.ACTIVE && (
+              <div className="absolute bottom-4 right-4 transform transition-all duration-500 ease-in-out cursor-pointer">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={toggleMic}
+                  className="bg-black/60 hover:bg-black/80 text-white rounded-full w-12 h-12 flex items-center justify-center"
+                  aria-label={
+                    isMuted ? "Turn on microphone" : "Turn off microphone"
+                  }
+                >
+                  {isMuted ? (
+                    <MicOff className="w-6 h-6" />
+                  ) : (
+                    <Mic className="w-6 h-6" />
+                  )}
+                </Button>
+              </div>
+            )}
+          </Card>
+
+          <div className="">
+            {" "}
             {/* End Lesson Button */}
             <Button
               onClick={
@@ -188,11 +193,12 @@ const CompanionVoice = ({
                   : handleCall
               }
               className={cn(
-                "h-14 w-full rounded-xl bg-red-600 text-lg font-semibold text-white shadow-lg",
+                "h-14 w-full rounded-lg bg-red-600 text-lg font-semibold text-white",
                 callStatus === CallStatus.ACTIVE
                   ? "bg-[#D92C54]"
                   : "bg-[#54C392]",
-                callStatus === CallStatus.CONNECTING && "bg-gray-200"
+                callStatus === CallStatus.CONNECTING &&
+                  "bg-gray-200 text-gray-800"
               )}
             >
               {callStatus === CallStatus.ACTIVE
@@ -202,13 +208,42 @@ const CompanionVoice = ({
                 : "Start Session"}
             </Button>
           </div>
+          {/* tool bar */}
+          {/* <div className="flex w-full flex-col gap-6 "></div> */}
         </div>
       </div>
-      <section className="mt-5 transcript">
-        <div className="transcript-message no-scrollbart">message</div>
-        <div className="transcript-fade"></div>
-      </section>
+      {/* message */}
+      {callStatus === CallStatus.ACTIVE && (
+        <div className="bg-red-200 w-full h-[600px] transform transition-all duration-500 ease-in-out ">
+          {/* messages */}
+          <section className="transcript">
+            <div className="transcript-message no-scrollbar">
+              {messages?.map((message, index) => {
+                if (message.role === "assistant") {
+                  return (
+                    <p key={index} className="text-sm">
+                      {name.split(" ")[0].replace("/[.,]/g, ", " ")}
+                      {message.content}
+                    </p>
+                  );
+                } else {
+                  return (
+                    <p key={index} className="text-lg font-semibold">
+                      {userName}: {message.content}
+                    </p>
+                  );
+                }
+              })}
+            </div>
+            {/* <div className="transcript-fade" /> */}
+          </section>
+        </div>
+      )}
     </div>
+
+    // <div className="flex items-center justify-between mx-auto h-[400px] gap-6">
+
+    // </div>
   );
 };
 

@@ -21,7 +21,7 @@ const CompanionSession = async ({ params }: companionSessionPageProps) => {
   if (!name) return redirect("/companions");
   return (
     <main>
-      <article className="flex rounded-border justify-between p-6">
+      <article className="flex rounded-border border-[#EBD6FB] justify-between p-6">
         <div className="flex items-center gap-2">
           <div
             className="size-[72px] justify-center rounded-lg max-md:hidden flex items-center"
@@ -36,17 +36,17 @@ const CompanionSession = async ({ params }: companionSessionPageProps) => {
               height={35}
             />
           </div>
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-2 mt-0 ml-2">
             <div className="flex items-center gap-2">
               <p className="font-bold text-2xl">{name}</p>
               <div className="subject-badge max-sm:hidden">{subject}</div>
             </div>
-            <p className="text-lg">{topic}</p>
+            <p className="text-lg max-sm:text-[12px] w-[80%] max-sm:w-[50%] truncate">
+              {topic}
+            </p>
           </div>
         </div>
-        <p className="items-start text-2xl max-sm:text-lg">
-          {duration} minutes
-        </p>
+        <p className="items-start text-xl max-sm:text-lg">{duration} minutes</p>
       </article>
       <CompanionVoice
         {...companion}
