@@ -8,7 +8,7 @@ const NavItems = () => {
   const navItems = [
     { label: "Home", href: "/" },
     { label: "Companions", href: "/companions" },
-    { label: "My Journey", href: "my-journey" },
+    { label: "My Journey", href: "/my-journey" },
   ];
   return (
     <nav className="flex items-center gap-5">

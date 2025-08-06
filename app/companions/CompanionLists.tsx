@@ -23,7 +23,7 @@ const CompanionLists = ({
 }: companionListProps) => {
   return (
     <article className={cn("mb-5", classNames)}>
-      <h2 className="text-2xl font-semibold">Recent Session</h2>
+      <h2 className="text-2xl font-semibold">{title}</h2>
       {companions?.map(({ id, subject, name, topic, duration }) => (
         <Link key={id} href={`/companions/${id}`}>
           <article
