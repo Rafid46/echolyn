@@ -5,6 +5,7 @@ import Image from "next/image";
 import { redirect } from "next/navigation";
 import React from "react";
 import CompanionVoice from "../CompanionVoice";
+import { Clock } from "lucide-react";
 
 interface companionSessionPageProps {
   name: string;
@@ -20,14 +21,14 @@ const CompanionSession = async ({ params }: companionSessionPageProps) => {
   if (!user) return redirect("sign-in");
   if (!name) return redirect("/companions");
   return (
-    <main>
-      <article className="flex rounded-border border-[#EBD6FB] justify-between p-6">
-        <div className="flex items-center gap-2">
+    <main className="p-4 sm:p-6">
+      <article className="flex flex-wrap justify-between items-start  p-4 sm:p-6 gap-4">
+        {/* Left section: Icon + info */}
+        <div className="flex items-center gap-4 flex-1">
+          {/* Subject icon */}
           <div
-            className="size-[72px] justify-center rounded-lg max-md:hidden flex items-center"
-            style={{
-              backgroundColor: getSubjectColor(subject),
-            }}
+            className="hidden md:flex items-center justify-center rounded-lg size-[72px]"
+            style={{ backgroundColor: getSubjectColor(subject) }}
           >
             <Image
               src={`/icons/${subject}.svg`}
@@ -36,18 +37,29 @@ const CompanionSession = async ({ params }: companionSessionPageProps) => {
               height={35}
             />
           </div>
-          <div className="flex flex-col gap-2 mt-0 ml-2">
-            <div className="flex items-center gap-2">
-              <p className="font-bold text-2xl">{name}</p>
-              <div className="subject-badge max-sm:hidden">{subject}</div>
+
+          {/* Info */}
+          <div className="flex flex-col gap-1 min-w-0">
+            <div className="flex flex-wrap items-center gap-2">
+              <p className="font-bold text-xl sm:text-2xl break-words">
+                {name}
+              </p>
+              <div className="subject-badge hidden sm:block">{subject}</div>
             </div>
-            <p className="text-lg max-sm:text-[12px] w-[80%] max-sm:w-[50%] truncate">
+            {/* Topic text, handles long strings */}
+            <p className="text-base sm:text-lg text-gray-600 break-words line-clamp-2">
               {topic}
             </p>
           </div>
         </div>
-        <p className="items-start text-xl max-sm:text-lg">{duration} minutes</p>
+
+        {/* Right section: Duration */}
+        <p className="text-sm sm:text-base lg:text-lg font-semibold text-gray-700 whitespace-nowrap flex items-center gap-2">
+          <Clock size={14} /> {duration} minutes
+        </p>
       </article>
+
+      {/* Voice companion */}
       <CompanionVoice
         {...companion}
         companionId={id}

@@ -13,8 +13,12 @@ const CompanionsLibrary = async ({ searchParams }: SearchParams) => {
   const companions = await getAllCompanions({ subject, topic });
   console.log(companions);
   return (
-    <main>
-      <h1>Companion Library</h1>
+    <main className="mb-5">
+      <div className="flex items-center justify-between">
+        <h1>Companion Library</h1>
+        <SearchInput />
+        {/* <SubjectFilter /> */}
+      </div>
       <section className="flex justify-between gap-4 max-sm:flex-col">
         <section className="companions-grid">
           {companions?.map((companion: any) => (
@@ -25,10 +29,6 @@ const CompanionsLibrary = async ({ searchParams }: SearchParams) => {
             />
           ))}
         </section>
-        <div className="flex gap-4">
-          <SearchInput />
-          {/* <SubjectFilter /> */}
-        </div>
       </section>
     </main>
   );

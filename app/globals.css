@@ -5,6 +5,17 @@
 
 @custom-variant dark (&:is(.dark *));
 
+
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #9929ea;
+  border-radius: 12px;
+}
+
 :root {
   --primary: oklch(0.205 0 0);
 
@@ -42,6 +53,9 @@
   --background: #F8F8FF;
   --foreground: oklch(0.145 0 0);
 }
+
+
+
 
 @theme inline {
   --color-primary_color: #9929ea;
@@ -151,11 +165,11 @@ body {
   }
 
   .companions-grid {
-    @apply flex flex-wrap gap-4 w-full max-md:justify-center;
+    @apply grid grid-cols-3 max-sm:grid-cols-1 gap-y-4 w-full mx-auto max-md:justify-center;
   }
 
   .companion-card {
-    @apply flex flex-col rounded-4xl border border-black px-4 py-4 gap-5 w-full min-lg:max-w-[410px] justify-between;
+    @apply flex flex-col rounded-2xl border border-black px-4 py-4 gap-5 w-full min-lg:max-w-[410px] justify-between;
   }
 
   .subject-badge {
@@ -211,7 +225,7 @@ body {
   }
 
   .companion-lottie {
-    @apply size-[300px] max-sm:size-[100px];
+    @apply size-[200px] max-sm:size-[100px];
   }
 
   .user-section {

@@ -8,6 +8,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { cn, getSubjectColor } from "@/lib/utils";
+import { Clock } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 interface companionListProps {
@@ -21,9 +22,52 @@ const CompanionLists = ({
   classNames,
 }: companionListProps) => {
   return (
-    <article className={cn("companion-list", classNames)}>
-      <h2 className="font-bold test-3xl">Recent Session</h2>
-      <Table>
+    <article className={cn("mb-5", classNames)}>
+      <h2 className="text-2xl font-semibold">Recent Session</h2>
+      {companions?.map(({ id, subject, name, topic, duration }) => (
+        <Link key={id} href={`/companions/${id}`}>
+          <article
+            key={id}
+            className="flex justify-between items-start mt-5 gap-4 bg-[#fefeff] rounded-lg p-4"
+          >
+            {/* Left section: Icon + info */}
+            <div className="flex items-center gap-4 flex-1">
+              {/* Subject icon */}
+              <div
+                className="hidden md:flex items-center justify-center p-8 rounded-lg"
+                style={{ backgroundColor: getSubjectColor(subject) }}
+              >
+                <Image
+                  src={`/icons/${subject}.svg`}
+                  alt={subject}
+                  width={50}
+                  height={50}
+                />
+              </div>
+
+              {/* Info */}
+              <div className="flex flex-col gap-1 min-w-0">
+                <div className="flex flex-wrap items-center gap-2">
+                  <p className="font-bold text-xl sm:text-2xl break-words">
+                    {name}
+                  </p>
+                  <div className="subject-badge hidden sm:block">{subject}</div>
+                </div>
+                {/* Topic text, handles long strings */}
+                <p className="text-base sm:text-lg text-gray-600 break-words line-clamp-2">
+                  {topic}
+                </p>
+              </div>
+            </div>
+
+            {/* Right section: Duration */}
+            <p className="text-sm sm:text-base lg:text-lg font-semibold text-gray-700 whitespace-nowrap flex items-center gap-2">
+              <Clock size={14} /> {duration} minutes
+            </p>
+          </article>
+        </Link>
+      ))}
+      {/* <Table>
         <TableHeader>
           <TableRow>
             <TableHead className="text-lg w-2/3">Lessons</TableHead>
@@ -34,7 +78,7 @@ const CompanionLists = ({
         <TableBody>
           {companions?.map(({ id, subject, name, topic, duration }) => (
             <TableRow key={id}>
-              <TableCell>
+              <TableCell className="overflow-x-hidden">
                 <Link href={`/companions/${id}`}>
                   <div className="flex items-center gap-2">
                     <div
@@ -52,7 +96,7 @@ const CompanionLists = ({
                     </div>
                     <div className="flex flex-col gap-2">
                       <p className="font-bold text-2xl">{name}</p>
-                      <p className="text-lg">{topic}</p>
+                      <p className="text-lg truncate">{topic}</p>
                     </div>
                   </div>
                 </Link>
@@ -92,7 +136,7 @@ const CompanionLists = ({
             </TableRow>
           ))}
         </TableBody>
-      </Table>
+      </Table> */}
     </article>
   );
 };

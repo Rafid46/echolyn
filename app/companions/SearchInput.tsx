@@ -36,13 +36,13 @@ const SearchInput = () => {
   }, [searchQuery, searchParams, pathname, router]);
 
   return (
-    <div>
+    <div className="mr-6">
       <div className="relative">
         <input
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder="Search..."
-          className="input border-2 border-gray-300 px-5 py-3 rounded-xl w-56 transition-all outline-none focus:border-blue-500"
+          className="input border-[1px] border-gray-300 px-5 py-3 rounded-xl w-56 transition-all outline-none focus:border-blue-500"
         />
         <svg
           className="size-6 absolute top-3 right-3 text-gray-500 pointer-events-none"

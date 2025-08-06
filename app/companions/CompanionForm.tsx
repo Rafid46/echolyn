@@ -22,7 +22,9 @@ import {
 import { subjects } from "@/constants";
 import { Textarea } from "@/components/ui/textarea";
 import { createCompanion } from "@/lib/actions/companion.action";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
+import { useState } from "react";
+import { routerServerGlobal } from "next/dist/server/lib/router-utils/router-server-context";
 const formSchema = z.object({
   name: z.string().min(1, { message: "Companion is required" }),
   subject: z.string().min(1, { message: "Subject is required" }),
@@ -32,7 +34,9 @@ const formSchema = z.object({
   duration: z.coerce.number().min(1, { message: "Duration is required" }),
 });
 
-const CompanionForm = () => {
+const CompanionForm = ({ onSuccess }: { onSuccess?: () => void }) => {
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -46,20 +50,21 @@ const CompanionForm = () => {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    setIsLoading(true);
+
     const companion = await createCompanion(values);
     if (companion) {
+      if (onSuccess) onSuccess();
       redirect(`/companions/${companion.id}`);
     } else {
+      setIsLoading(false);
       console.log("failed to create");
     }
   };
 
   return (
     <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-8 w-[500px]"
-      >
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <FormField
           control={form.control}
           name="name"
@@ -196,10 +201,11 @@ const CompanionForm = () => {
         />
 
         <Button
+          disabled={isLoading}
           className="w-full cursor-pointer bg-primary_color"
           type="submit"
         >
-          Build your companion
+          {isLoading ? "Building..." : "Build your companion"}
         </Button>
       </form>
     </Form>

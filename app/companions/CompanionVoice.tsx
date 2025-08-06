@@ -12,6 +12,9 @@ import soundWave from "../../constants/soundanimation.json";
 import { vapi } from "@/lib/vapi.sdk";
 import { FaMicrophone } from "react-icons/fa";
 import { MdMicOff } from "react-icons/md";
+import GradientText from "@/TextEffect/GradientText/GradientText";
+import { addToSessionHistory } from "@/lib/actions/companion.action";
+
 enum CallStatus {
   INACTIVE = "INACTIVE",
   CONNECTING = "CONNECTING",
@@ -44,7 +47,10 @@ const CompanionVoice = ({
 
   useEffect(() => {
     const onCallStart = () => setCallStatus(CallStatus.ACTIVE);
-    const onCallEnd = () => setCallStatus(CallStatus.FINISHED);
+    const onCallEnd = () => {
+      setCallStatus(CallStatus.FINISHED);
+      addToSessionHistory(companionId);
+    };
     const onMessage = (message: Message) => {
       if (message.type === "transcript" && message.transcriptType === "final") {
         const newMessage = { role: message.role, content: message.transcript };
@@ -96,12 +102,12 @@ const CompanionVoice = ({
   };
 
   return (
-    <div className="flex justify-center gap-4">
+    <div className="flex justify-center flex-row max-sm:flex-col gap-4">
       {/* left card */}
-      <div className="w-[500px]">
+      <div className="lg:w-[500px] max-sm:w-full">
         <div className="flex flex-col gap-4">
           {/* bot card */}
-          <Card className="rounded-xl border-2 border-[#EBD6FB] !bg-white p-8">
+          <Card className="rounded-xl shadow-none border-2 border-[#EBD6FB] !bg-white p-8">
             <CardContent className="flex flex-col items-center justify-center p-0 text-center">
               <div className="mb-6 flex items-center justify-center rounded-2xl">
                 <div
@@ -115,7 +121,7 @@ const CompanionVoice = ({
                       "opacity-100 animate-pulse"
                   )}
                 >
-                  <Bot className="text-primary_color" size={200} />
+                  <Bot className="text-primary_color" size={150} />
                 </div>
                 <div
                   className={cn(
@@ -133,9 +139,24 @@ const CompanionVoice = ({
                   />
                 </div>
               </div>
-              <h2 className="text-2xl font-bold text-gray-800 md:text-3xl">
-                {subject}
-              </h2>
+              {callStatus === CallStatus.ACTIVE ? (
+                <GradientText
+                  colors={[
+                    "#40ffaa",
+                    "#4079ff",
+                    "#40ffaa",
+                    "#4079ff",
+                    "#40ffaa",
+                  ]}
+                  animationSpeed={3}
+                  showBorder={false}
+                  className="text-2xl font-bold capitalize"
+                >
+                  {subject}
+                </GradientText>
+              ) : (
+                <p className="text-2xl font-bold capitalize">{subject}</p>
+              )}
             </CardContent>
           </Card>
           {/* User Profile Card */}
@@ -154,10 +175,12 @@ const CompanionVoice = ({
                 alt={userName}
                 width={100}
                 height={100}
-                className="mb-4 rounded-full object-cover border-2 border-white"
+                className="mb-4 rounded-full object-cover border-2 !border-primary_color"
                 priority
               />
-              <h3 className="text-lg font-semibold text-white">{userName}</h3>
+              <h3 className="text-xl font-semibold text-zinc-900">
+                {userName}
+              </h3>
             </div>
 
             {/* Control Buttons */}
@@ -167,7 +190,7 @@ const CompanionVoice = ({
                   variant="ghost"
                   size="icon"
                   onClick={toggleMic}
-                  className="bg-black/60 hover:bg-black/80 text-white rounded-full w-12 h-12 flex items-center justify-center"
+                  className="bg-black/60 cursor-pointer text-white rounded-full w-12 h-12 flex items-center justify-center"
                   aria-label={
                     isMuted ? "Turn on microphone" : "Turn off microphone"
                   }
@@ -193,18 +216,18 @@ const CompanionVoice = ({
                   : handleCall
               }
               className={cn(
-                "h-14 w-full rounded-lg bg-red-600 text-lg font-semibold text-white",
+                "h-14 w-full rounded-lg bg-red-600 text-lg font-semibold text-white cursor-pointer",
                 callStatus === CallStatus.ACTIVE
                   ? "bg-[#D92C54]"
-                  : "bg-[#54C392]",
+                  : "bg-primary_color",
                 callStatus === CallStatus.CONNECTING &&
-                  "bg-gray-200 text-gray-800"
+                  "bg-gray-200 text-gray-800 animate-pulse"
               )}
             >
               {callStatus === CallStatus.ACTIVE
                 ? "End Session"
                 : callStatus === CallStatus.CONNECTING
-                ? "Connecting"
+                ? "Connecting..."
                 : "Start Session"}
             </Button>
           </div>
@@ -213,32 +236,48 @@ const CompanionVoice = ({
         </div>
       </div>
       {/* message */}
-      {callStatus === CallStatus.ACTIVE && (
-        <div className="bg-red-200 w-full h-[600px] transform transition-all duration-500 ease-in-out ">
-          {/* messages */}
-          <section className="transcript">
-            <div className="transcript-message no-scrollbar">
-              {messages?.map((message, index) => {
-                if (message.role === "assistant") {
-                  return (
-                    <p key={index} className="text-sm">
-                      {name.split(" ")[0].replace("/[.,]/g, ", " ")}
-                      {message.content}
-                    </p>
-                  );
-                } else {
-                  return (
-                    <p key={index} className="text-lg font-semibold">
-                      {userName}: {message.content}
-                    </p>
-                  );
-                }
-              })}
-            </div>
-            {/* <div className="transcript-fade" /> */}
-          </section>
-        </div>
-      )}
+
+      <div className=" bg-white border-2 border-zinc-600 p-5 rounded-xl w-full  transform transition-all duration-500 ease-in-out">
+        {/* messages */}
+        <section className="transcript relative h-full overflow-hidden">
+          {!messages ||
+            (messages.length === 0 && (
+              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                <Image
+                  src="/images/comp.png"
+                  width={200}
+                  height={300}
+                  alt="hh"
+                />
+                <p>Start the session for messages</p>
+              </div>
+            ))}
+          <div className="transcript-message  h-full overflow-y-auto pr-2 max-h-[480px] space-y-2">
+            {messages?.map((message, index) => {
+              if (message.role === "assistant") {
+                return (
+                  <p
+                    key={index}
+                    className="text-[14px] flex items-center gap-x-2"
+                  >
+                    {/* {name.split(" ")[0].replace(/[,\.]/g, ", ")} */}
+                    <Bot size={14} className="text-primary_color" />:{" "}
+                    {message.content}
+                  </p>
+                );
+              } else {
+                return (
+                  <p key={index} className="text-lg font-semibold">
+                    {userName}: {message.content}
+                  </p>
+                );
+              }
+            })}
+          </div>
+          {/* Fade effect at bottom */}
+          <div className="absolute bottom-0 left-0 w-full h-12 bg-gradient-to-t from-white to-transparent pointer-events-none" />
+        </section>
+      </div>
     </div>
 
     // <div className="flex items-center justify-between mx-auto h-[400px] gap-6">

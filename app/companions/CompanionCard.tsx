@@ -32,7 +32,7 @@ const CompanionCard = ({
 
   return (
     <article
-      className="companion-card !border-none"
+      className="companion-card h-[250px] !border-none"
       style={{ backgroundColor: color }}
     >
       <div className="flex justify-between items-center">
@@ -48,7 +48,7 @@ const CompanionCard = ({
       </div>
 
       <h2 className="text-2xl font-bold">{name}</h2>
-      <p className="text-sm">{topic}</p>
+      <p className="text-sm truncate">{topic}</p>
       <div className="flex items-center gap-2">
         <Image
           src="/icons/clock.svg"
@@ -62,7 +62,7 @@ const CompanionCard = ({
         <Button
           onClick={handleLaunch}
           disabled={isLoading}
-          className="!bg-primary_color !py-[20px] rounded-xl cursor-pointer w-full justify-center"
+          className="!bg-primary_color !py-[20px] rounded-lg cursor-pointer w-full justify-center"
         >
           {isLoading ? "Loading..." : "Launch Lesson"}
         </Button>
