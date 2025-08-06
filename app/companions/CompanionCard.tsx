@@ -32,10 +32,10 @@ const CompanionCard = ({
 
   return (
     <article
-      className="companion-card h-[250px] !border-none"
+      className="companion-card h-[200px] !border-none"
       style={{ backgroundColor: color }}
     >
-      <div className="flex justify-between items-center">
+      {/* <div className="flex items-end justify-end">
         <div className="subject-badge">{subject}</div>
         <button className="companion-bookmark">
           <Image
@@ -45,9 +45,22 @@ const CompanionCard = ({
             height={15}
           />
         </button>
-      </div>
+      </div> */}
 
-      <h2 className="text-2xl font-bold">{name}</h2>
+      <div className="flex items-center justify-between">
+        <h2 className="text-2xl font-bold">{name}</h2>
+        <div className="flex items-end justify-end">
+          <div className="subject-badge">{subject}</div>
+          {/* <button className="companion-bookmark">
+          <Image
+            src="/icons/bookmark.svg"
+            alt="bookmark"
+            width={12.5}
+            height={15}
+          />
+        </button> */}
+        </div>
+      </div>
       <p className="text-sm truncate">{topic}</p>
       <div className="flex items-center gap-2">
         <Image
