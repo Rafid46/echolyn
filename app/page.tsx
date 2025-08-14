@@ -20,7 +20,11 @@ import {
 // import CompanionForm from "./companions/CompanionForm";
 // import { useState } from "react";
 import HomeClient from "./companions/HomeClient";
+import { currentUser } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
 const Page = async () => {
+  const user = await currentUser();
+  if (!user) redirect("/sign-in");
   const companions = await getAllCompanions({ limit: 3 });
   const recentSessions = await getRecentSessions(10);
   return <HomeClient companions={companions} recentSessions={recentSessions} />;

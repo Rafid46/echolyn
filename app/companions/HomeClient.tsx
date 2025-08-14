@@ -2,7 +2,6 @@
 "use client";
 import { getSubjectColor } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
 import { Plus } from "lucide-react";
 import {
   Dialog,

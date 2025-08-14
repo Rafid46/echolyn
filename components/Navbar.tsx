@@ -14,7 +14,16 @@ import {
 import { Button } from "./ui/button";
 const Navbar = () => {
   return (
-    <div>
+    <div
+      style={{
+        backgroundImage: `url('/images/line.png')`,
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "center",
+        backgroundSize: "80% auto",
+        zIndex: 50,
+      }}
+      className="flex items-center my-5 w-full h-20 bg-no-repeat bg-center bg-contain"
+    >
       <nav className="navbar">
         <Link href="/">
           <div className="flex items-center gap-2.5 cursor-pointer">

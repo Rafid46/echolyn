@@ -38,50 +38,6 @@ const ProfilePage = async () => {
       iconColor: "bg-orange-500",
     },
   ];
-
-  const lessons = [
-    {
-      icon: FlaskConical,
-      iconBg: "bg-icon-purple",
-      title: "Neura the Brainy Explorer",
-      topic: "Neural Networks of the Brain",
-      subject: "Science",
-      duration: "45 mins",
-    },
-    {
-      icon: Grid3x3,
-      iconBg: "bg-icon-yellow",
-      title: "Algebrina, the Eq Queen",
-      topic: "Solving Linear Equations",
-      subject: "Maths",
-      duration: "20 mins",
-    },
-    {
-      icon: MessageSquareText,
-      iconBg: "bg-icon-blue",
-      title: "Luna, Your Grammar Guide",
-      topic: "Mastering Tenses in English",
-      subject: "Language",
-      duration: "32 mins",
-    },
-    {
-      icon: Code,
-      iconBg: "bg-icon-pink",
-      title: "Codey, the Logic Hacker",
-      topic: "Intro to If-Else Statements",
-      subject: "Coding",
-      duration: "30 mins",
-    },
-    {
-      icon: ScrollText,
-      iconBg: "bg-icon-orange",
-      title: "Memo, the Memory Keeper",
-      topic: "World Wars: Causes & Effects",
-      subject: "History",
-      duration: "15 mins",
-    },
-  ];
-
   // 🟢 Stat Card Component
   const StatsCard = ({ icon, label, value, iconColor }: any) => (
     <div className="flex items-center gap-4 p-4 bg-white dark:bg-gray-800 rounded-lg shadow">

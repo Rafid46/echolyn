@@ -18,24 +18,18 @@ const NavItems = () => {
     {
       title: "Home",
       href: "/",
-      icon: (
-        <Home className="h-full w-full text-neutral-500 dark:text-neutral-300" />
-      ),
+      icon: <Home className="h-full w-full" />,
     },
 
     {
       title: "Companions",
       href: "/companions",
-      icon: (
-        <MdAssistant className="h-full w-full text-neutral-500 dark:text-neutral-300" />
-      ),
+      icon: <MdAssistant className="h-full w-full" />,
     },
     {
       title: "My journey",
-      href: "/",
-      icon: (
-        <User className="h-full w-full text-neutral-500 dark:text-neutral-300" />
-      ),
+      href: "/my-journey",
+      icon: <User className="h-full w-full" />,
     },
   ];
   return (
@@ -52,7 +46,7 @@ const NavItems = () => {
     //     </Link>
     //   ))}
     // </nav>
-    <div className="mt-5">
+    <div className="mb-4 mr-[20px]">
       <FloatingDeck items={navItems} />
     </div>
   );

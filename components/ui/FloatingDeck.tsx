@@ -11,6 +11,8 @@ import {
   useTransform,
 } from "framer-motion";
 import { Layout } from "lucide-react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 import { useRef, useState } from "react";
 
@@ -121,6 +123,8 @@ function IconContainer({
   icon: React.ReactNode;
   href: string;
 }) {
+  const pathname = usePathname();
+  const isActive = pathname === href;
   const ref = useRef<HTMLDivElement>(null);
 
   const distance = useTransform(mouseX, (val) => {
@@ -168,13 +172,18 @@ function IconContainer({
   const [hovered, setHovered] = useState(false);
 
   return (
-    <a href={href}>
+    <Link href={href}>
       <motion.div
         ref={ref}
         style={{ width, height }}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
-        className="relative flex aspect-square items-center justify-center rounded-full bg-black dark:bg-neutral-800 cursor-pointer"
+        className={cn(
+          "relative flex aspect-square items-center justify-center rounded-full cursor-pointer transition-colors",
+          isActive
+            ? "bg-[#F8F8FF]  border-[1px] border-black"
+            : "bg-black dark:bg-neutral-800"
+        )}
       >
         <AnimatePresence>
           {hovered && (
@@ -182,20 +191,24 @@ function IconContainer({
               initial={{ opacity: 0, y: 10, x: "-50%" }}
               animate={{ opacity: 1, y: 0, x: "-50%" }}
               exit={{ opacity: 0, y: 10, x: "-50%" }}
-              className="absolute -top-10 left-1/2 z-50 whitespace-nowrap rounded-md border px-2 py-1 text-xs text-neutral-700 shadow-md"
+              className="absolute -bottom-10 left-1/2 z-50 whitespace-nowrap rounded-md border px-2 py-1 text-xs text-neutral-700 shadow-md"
             >
               {title}
             </motion.div>
           )}
         </AnimatePresence>
         <motion.div
+          className={`${isActive ? "text-black" : "!text-white"}`}
           style={{ width: widthIcon, height: heightIcon }}
-          className="flex items-center justify-center !text-white"
+          // className={cn(
+          //   "flex items-center justify-center",
+          //   isActive ? "text-white" : "text-white/60"
+          // )}
         >
           {icon}
         </motion.div>
       </motion.div>
-    </a>
+    </Link>
   );
 }
 
