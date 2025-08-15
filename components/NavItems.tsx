@@ -2,6 +2,8 @@
 "use client";
 import FloatingDeck from "./ui/FloatingDeck";
 import { Home, User } from "lucide-react";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import { MdAssistant } from "react-icons/md";
 
 const NavItems = () => {
@@ -28,6 +30,7 @@ const NavItems = () => {
       icon: <User className="h-full w-full" />,
     },
   ];
+
   return (
     // <nav className="flex items-center gap-5">
     //   {navItems?.map(({ label, href }) => (

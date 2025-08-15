@@ -51,7 +51,7 @@ const ProfilePage = async () => {
 
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900 p-4 sm:p-6 lg:p-8">
-      <div className="max-w-6xl mx-auto space-y-8">
+      <div className="max-w-[1200px] mx-auto space-y-8">
         {/* Profile + Stats */}
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
           {/* Avatar */}
