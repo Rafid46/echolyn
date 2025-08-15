@@ -1,20 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Card, CardHeader, CardContent } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   getUserCompanions,
   getUserSessions,
 } from "@/lib/actions/companion.action";
 import { currentUser } from "@clerk/nextjs/server";
-import {
-  CheckCircle2,
-  GraduationCap,
-  FlaskConical,
-  Grid3x3,
-  MessageSquareText,
-  Code,
-  ScrollText,
-} from "lucide-react";
+import { CheckCircle2, GraduationCap } from "lucide-react";
 import { redirect } from "next/navigation";
 import CompanionLists from "../companions/CompanionLists";
 
@@ -56,34 +48,7 @@ const ProfilePage = async () => {
   );
 
   // 🟢 Lesson Card Component
-  const LessonCard = ({
-    icon: Icon,
-    iconBg,
-    title,
-    topic,
-    subject,
-    duration,
-  }: any) => (
-    <div className="flex items-center gap-4 p-4 bg-white dark:bg-gray-800 rounded-lg shadow">
-      <div
-        className={`w-10 h-10 flex items-center justify-center rounded-full ${iconBg}`}
-      >
-        <Icon className="w-5 h-5 text-white" />
-      </div>
-      <div className="flex-1">
-        <h4 className="font-semibold text-gray-900 dark:text-white">{title}</h4>
-        <p className="text-sm text-gray-600 dark:text-gray-400">
-          Topic: {topic}
-        </p>
-      </div>
-      <div className="text-right">
-        <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
-          {subject}
-        </p>
-        <p className="text-xs text-gray-500">{duration}</p>
-      </div>
-    </div>
-  );
+
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900 p-4 sm:p-6 lg:p-8">
       <div className="max-w-6xl mx-auto space-y-8">

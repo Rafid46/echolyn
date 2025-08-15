@@ -3,7 +3,6 @@ import { getAllCompanions } from "@/lib/actions/companion.action";
 import React from "react";
 import CompanionCard from "./CompanionCard";
 import { getSubjectColor } from "@/lib/utils";
-import SubjectFilter from "./SubjectFilter";
 import SearchInput from "./SearchInput";
 
 const CompanionsLibrary = async ({ searchParams }: SearchParams) => {

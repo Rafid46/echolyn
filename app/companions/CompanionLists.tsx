@@ -1,12 +1,3 @@
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import { cn, getSubjectColor } from "@/lib/utils";
 import { Clock } from "lucide-react";
 import Image from "next/image";
@@ -26,9 +17,9 @@ const CompanionLists = ({
       <h2 className="text-2xl font-semibold">{title}</h2>
       {companions?.map(({ id, subject, name, topic, duration }) => (
         <Link key={id} href={`/companions/${id}`}>
-          <article
+          <div
             key={id}
-            className="flex justify-between items-start mt-5 gap-4 bg-[#fefeff] rounded-lg p-4"
+            className="flex justify-between items-start mt-5 gap-4 bg-[#fefeff] rounded-lg p-4 w-full lg:w-[1100px]"
           >
             {/* Left section: Icon + info */}
             <div className="flex items-center gap-4 flex-1">
@@ -64,7 +55,7 @@ const CompanionLists = ({
             <p className="text-sm sm:text-base lg:text-lg font-semibold text-gray-700 whitespace-nowrap flex items-center gap-2">
               <Clock size={14} /> {duration} minutes
             </p>
-          </article>
+          </div>
         </Link>
       ))}
       {/* <Table>

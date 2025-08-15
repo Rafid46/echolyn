@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { getCompanion } from "@/lib/actions/companion.action";
 import { getSubjectColor } from "@/lib/utils";
 import { currentUser } from "@clerk/nextjs/server";
@@ -7,14 +8,8 @@ import React from "react";
 import CompanionVoice from "../CompanionVoice";
 import { Clock } from "lucide-react";
 
-interface companionSessionPageProps {
-  name: string;
-  subject: string;
-  params: Promise<{ id: string }>;
-}
-
-const CompanionSession = async ({ params }: companionSessionPageProps) => {
-  const { id } = await params;
+const CompanionSession = async ({ params }: any) => {
+  const { id } = params;
   const companion = await getCompanion(id);
   const { name, subject, topic, duration } = companion;
   const user = await currentUser();

@@ -5,13 +5,11 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Bot, Mic, MicOff } from "lucide-react";
-import { cn, configureAssistant, getSubjectColor } from "@/lib/utils";
+import { cn, configureAssistant } from "@/lib/utils";
 import Lottie from "lottie-react";
 import { useEffect, useRef, useState } from "react";
 import soundWave from "../../constants/soundanimation.json";
 import { vapi } from "@/lib/vapi.sdk";
-import { FaMicrophone } from "react-icons/fa";
-import { MdMicOff } from "react-icons/md";
 import GradientText from "@/TextEffect/GradientText/GradientText";
 import { addToSessionHistory } from "@/lib/actions/companion.action";
 
@@ -76,7 +74,7 @@ const CompanionVoice = ({
       vapi.off("speech-start", onSpeechStart);
       vapi.off("speech-end", onSpeechEnd);
     };
-  }, []);
+  }, [companionId]);
 
   const toggleMic = () => {
     const isMuted = vapi.isMuted();

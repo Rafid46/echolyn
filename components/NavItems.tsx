@@ -1,14 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import { cn } from "@/lib/utils";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
 import FloatingDeck from "./ui/FloatingDeck";
 import { Home, User } from "lucide-react";
 import { MdAssistant } from "react-icons/md";
 
 const NavItems = () => {
-  const pathName = usePathname();
   // const navItems = [
   //   { label: "Home", href: "/" },
   //   { label: "Companions", href: "/companions" },
@@ -46,7 +42,7 @@ const NavItems = () => {
     //     </Link>
     //   ))}
     // </nav>
-    <div className="mb-4 mr-[20px]">
+    <div className="ml-8 mr-10">
       <FloatingDeck items={navItems} />
     </div>
   );
